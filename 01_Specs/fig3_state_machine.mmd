@@ -1,0 +1,13 @@
+stateDiagram-v2
+    [*] --> STATE_COLD_BOOT: Power-On Self-Test (POST)
+    STATE_COLD_BOOT --> STATE_CALIBRATION: QNX Memory Map & Sensor Sync
+    STATE_CALIBRATION --> STATE_ACTIVE_NOMINAL: Zero Offset Settled (<= 10ms)
+    
+    STATE_ACTIVE_NOMINAL --> STATE_THERMAL_DAMPING: Torque Overload (> 85Nm) or Temp > 115C
+    STATE_THERMAL_DAMPING --> STATE_ACTIVE_NOMINAL: Cooldown Complete (Temp < 95C)
+    
+    STATE_ACTIVE_NOMINAL --> STATE_ESTOP_TRIPPED: Memory Leak > 0B OR Jitter > 50us
+    STATE_THERMAL_DAMPING --> STATE_ESTOP_TRIPPED: Watchdog Timeout (> 50ms)
+    
+    STATE_ESTOP_TRIPPED --> STATE_ZDR_SHRED: Instant 2-Pass ZDR Memory Purge
+    STATE_ZDR_SHRED --> [*]: Safe State Reached (0.00MB Leak)

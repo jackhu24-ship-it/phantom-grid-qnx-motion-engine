@@ -1,0 +1,33 @@
+graph TD
+    subgraph HW_LAYER ["1. Automotive Chassis & Sensor Hardware"]
+        CAN_BUS["CAN-FD Bus (64-Byte Payload @ 5 Mbps)"]
+        IMU_ADC["Chassis ADC Telemetry & 6-DOF IMU (1000Hz)"]
+        MOTOR_HW["PMSM 3-Phase Permanent Magnet Synchronous Motor"]
+    end
+
+    subgraph QNX_MICROKERNEL ["2. QNX Neutrino RTOS Microkernel Isolation"]
+        DEV_DRIVER["QNX io-pkt / CAN-FD Driver (Pulse Delivery)"]
+        ADC_PULSE["Chassis Sensor Pulse Handler (Priority 60)"]
+        FOC_PULSE["High-Priority FOC Control Thread (Priority 63, Hard RT)"]
+        DAMP_GUARD["Adaptive 1.35x Thermal Damping Watchdog (Priority 58)"]
+        ZDR_GATEWAY["ASIL-D Memory Guard & 2-Pass ZDR Destructor"]
+    end
+
+    subgraph ALGO_PIPELINE ["3. PHANToM GRID Engine Core"]
+        CLARKE_PARK["Clarke & Park Transforms (<= 1.85us Determinism)"]
+        SVPWM_GEN["SVPWM Modulation Matrix"]
+        THERMAL_MODEL["Nonlinear Stator Temperature Observer"]
+        TELEMETRY_STREAM["HUD Live Telemetry Exporter"]
+    end
+
+    CAN_BUS --> DEV_DRIVER
+    IMU_ADC --> ADC_PULSE
+    DEV_DRIVER --> FOC_PULSE
+    ADC_PULSE --> FOC_PULSE
+    FOC_PULSE --> CLARKE_PARK
+    CLARKE_PARK --> THERMAL_MODEL
+    THERMAL_MODEL --> DAMP_GUARD
+    DAMP_GUARD --> SVPWM_GEN
+    SVPWM_GEN --> MOTOR_HW
+    FOC_PULSE --> ZDR_GATEWAY
+    FOC_PULSE --> TELEMETRY_STREAM

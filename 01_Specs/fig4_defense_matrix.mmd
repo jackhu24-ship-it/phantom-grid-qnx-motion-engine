@@ -1,0 +1,16 @@
+graph LR
+    subgraph INGRESS_DEFENSE ["Stage 1: Ingress & Frame Sanitization"]
+        CAN_IN["Raw CAN-FD Ingress"] --> CRC_CHECK["Hardware CRC-16 Check"]
+        CRC_CHECK --> JITTER_GUARD["<= 50.0us Deterministic Ingress Jitter Gate"]
+    end
+
+    subgraph KERNEL_DEFENSE ["Stage 2: Deterministic Microkernel Guard"]
+        JITTER_GUARD --> POSIX_SHED["QNX SCHED_FIFO Priority Inversion Free"]
+        POSIX_SHED --> DAMP_CLAMP["1.35x Dynamic Exponential Damping"]
+    end
+
+    subgraph SHUTDOWN_DEFENSE ["Stage 3: ASIL-D Zero-Residual Defense"]
+        DAMP_CLAMP --> WATCHDOG["50ms Hardware Watchdog Heartbeat"]
+        WATCHDOG --> VRAM_CHECK["50GB Hard VRAM Ceiling Check"]
+        VRAM_CHECK --> ZDR_PASS["2-Pass Physical Memory Shred (0xAA -> 0x00)"]
+    end

@@ -1,0 +1,25 @@
+tournament:
+  name: "BlackBerry QNX Global Hackathon 2026"
+  short_name: "QNX_Global_Hackathon"
+  platform: "Devpost"
+  prize_pool: "$50,000 USD"
+  submission_deadline: "2026-12-15T14:00:00-05:00" # Taipei: Dec 16, 03:00 AM
+  official_url: "https://qnx.devpost.com/"
+  status: "ACTIVE_IN_DEVELOPMENT"
+
+lead_architect:
+  name: "Jack Hu (Solo Architect)"
+  organization: "PHANToM GRID Sovereign Architecture"
+  contact: "jackhu24@gmail.com"
+  commander: "Commander Xiaomi"
+
+project:
+  title: "PHANToM GRID :: QNX Automotive ASIL-D Motion & Thermal Damping Engine"
+  tagline: "Microsecond Hardware Determinism on QNX Neutrino RTOS with PMSM FOC & CAN-FD 64B Telemetry"
+  category: "Automotive RTOS / ASIL-D Safety / Motor Control"
+
+deliverables:
+  drawers: 10
+  video_target: "1440P 60FPS ACES 2.0 (<= 180s)"
+  deck_target: "PHANToM_GRID_QNX_Automotive_Motion_Official_Deck.pdf"
+  compliance: "100% CJK Leak Free / ASIL-D / 2-Pass ZDR (0.00MB)"

@@ -1,0 +1,23 @@
+sequenceDiagram
+    autonumber
+    participant HW as CAN-FD / ADC
+    participant ISR as QNX ISR / Pulse Event
+    participant Core as FOC Thread (Pri 63)
+    participant Damp as Thermal Guard
+    participant Motor as PMSM Inverter
+    participant ZDR as ZDR Destructor
+
+    HW->>ISR: Receive 64B Telemetry Frame (Timestamped)
+    ISR->>Core: MsgDeliverEvent (Pulse delivered in <= 4.2us)
+    Core->>Core: Clarke Transform (Ia, Ib -> Ialpha, Ibeta)
+    Core->>Core: Park Transform (Ialpha, Ibeta, theta -> Id, Iq)
+    Core->>Damp: Sample Torque Request & Coil Temperature
+    alt Torque > 85.0 Nm OR Temp > 115.0 deg C
+        Damp->>Core: Inject 1.35x Geometric Damping Window
+        Core->>Core: Clamp Iq Current Vector (Damped Saturation)
+    else Nominal Range
+        Damp->>Core: Pass Through Unattenuated Flux Reference
+    end
+    Core->>Motor: Dispatch SVPWM Duty Cycles (U, V, W)
+    Core->>ZDR: Task Cycle Complete (Flush Transient Buffers)
+    ZDR->>ZDR: 2-Pass ZDR Shred (0xAA -> 0x00, 0.00MB)

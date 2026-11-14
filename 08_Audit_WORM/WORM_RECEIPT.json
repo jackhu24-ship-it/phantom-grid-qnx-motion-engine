@@ -1,0 +1,20 @@
+{
+  "worm_receipt_id": "WORM-QNX-20261215-ASIL-D-78F9B10C",
+  "tournament": "BlackBerry QNX Global Hackathon 2026",
+  "architect": "Jack Hu (Solo Architect)",
+  "commander": "Commander Xiaomi",
+  "timestamp": "2026-11-15T00:02:00Z",
+  "zdr_status": {
+    "pass_1": "0xAA",
+    "pass_2": "0x00",
+    "residual_memory_mb": 0.0,
+    "vram_ceiling_gb": 50.0,
+    "vram_peak_gb": 0.0
+  },
+  "chaos_verification": {
+    "cycles": 1000,
+    "status": "ALL_GREEN_PASS",
+    "hash_sha256": "4b073e0c38ff4b85bc1d7eb31da2d052"
+  },
+  "release_seal": "OFFICIALLY_SEALED_BY_COMMANDER_XIAOMI"
+}

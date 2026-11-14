@@ -1,0 +1,8 @@
+# Rule 91 Lightweight Binary Exclusion Invariant
+*.mp4
+*.pdf
+scratch/
+__pycache__/
+*.pyc
+.DS_Store
+Thumbs.db
